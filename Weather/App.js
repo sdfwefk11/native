@@ -9,7 +9,18 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
+import { Fontisto, Feather } from "@expo/vector-icons";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
+
+const icon = {
+  Clear: "day-sunny",
+  Snow: "snowflake-8",
+  Clouds: "cloudy",
+  Atmosphere: "fog",
+  Rain: "rain",
+  Drizzle: "cloud-drizzle",
+  Thunderstorm: "lightning",
+};
 
 export default function App() {
   const [errorMsg, setErrorMsg] = useState(true);
@@ -50,6 +61,7 @@ export default function App() {
           <Text style={styles.cityName1}>{city[0].region}</Text>
           <Text style={styles.cityName2}>{city[0].district}</Text>
         </View>
+
         <ScrollView
           pagingEnabled
           horizontal
@@ -58,15 +70,32 @@ export default function App() {
         >
           {forecast.length === 0 ? (
             <View style={styles.day}>
-              <ActivityIndicator color="#FF66FF" size="large" />
+              <ActivityIndicator color="black" size="large" />
             </View>
           ) : (
             forecast.map((item, index) => (
               <View key={index} style={styles.day}>
+                <View style={styles.iconst}>
+                  {item.weather[0].main === "Drizzle" ? (
+                    <Feather
+                      name={icon[item.weather[0].main]}
+                      size={40}
+                      color="black"
+                    ></Feather>
+                  ) : (
+                    <Fontisto
+                      name={icon[item.weather[0].main]}
+                      size={40}
+                      color="black"
+                    />
+                  )}
+                </View>
                 <View style={styles.tempView}>
-                  <Text style={styles.temp}>
-                    {parseFloat(item.temp.day).toFixed(1)}
-                  </Text>
+                  <View style={styles.temp}>
+                    <Text style={{ fontSize: 100 }}>
+                      {parseFloat(item.temp.day).toFixed(1)}
+                    </Text>
+                  </View>
                   <View style={styles.miniTempView}>
                     <Text style={styles.miniTemp}>
                       morning {parseFloat(item.temp.morn).toFixed(1)}
@@ -88,7 +117,6 @@ export default function App() {
     </>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -102,6 +130,7 @@ const styles = StyleSheet.create({
   cityName1: {
     fontSize: 68,
     fontWeight: "500",
+    marginTop: 100,
   },
   cityName2: {
     fontSize: 40,
@@ -114,23 +143,29 @@ const styles = StyleSheet.create({
   },
   tempView: {
     flexDirection: "row",
+    marginTop: 10,
   },
   miniTempView: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 100,
-    marginLeft: 10,
+    marginLeft: 15,
   },
   temp: {
-    marginTop: 100,
-    fontSize: 150,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
   },
-  miniTemp: {},
-
   weatherMain: {
+    marginTop: 40,
     fontSize: 40,
   },
   weatherDescription: {
     marginTop: 20,
+  },
+  iconst: {
+    flex: 0.2,
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
