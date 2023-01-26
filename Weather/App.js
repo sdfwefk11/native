@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: "500",
   },
-  weather: {},
   day: {
     width: SCREEN_WIDTH,
     alignItems: "center",
